@@ -8,7 +8,7 @@ const schema = defineSchema({
     workspaces : defineTable({
         name: v.string(),
         userId: v.id('users'),
-        joinCOde: v.string(),
+        joinCOde: v.optional(v.string()), //TODO fix this issue
     }),
     members: defineTable({
         userId: v.id("users"),
