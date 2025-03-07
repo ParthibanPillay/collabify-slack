@@ -1,6 +1,11 @@
 import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
 import { differenceInMinutes, format, formatDate, isToday, isYesterday } from "date-fns";
 import { Message } from "./message";
+import { ChannelHero } from "./channel-hero";
+import { useState } from "react";
+import { Id } from "../../convex/_generated/dataModel";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
 
 const TIME_THRESHOLD = 5;
 
@@ -16,11 +21,11 @@ interface MessageListProps {
     canLoadMore: boolean;
 }
 
-const formatDateLabel = (dateStr:string) => {
+const formatDateLabel = (dateStr: string) => {
     const date = new Date(dateStr);
-    if(isToday(date)) return "Today";
-    if(isYesterday(date)) return "Yesterday";
-    return format(date,"EEEE,MMMM d");
+    if (isToday(date)) return "Today";
+    if (isYesterday(date)) return "Yesterday";
+    return format(date, "EEEE,MMMM d");
 }
 
 export const MesesageList = ({
@@ -34,6 +39,12 @@ export const MesesageList = ({
     isLoadingMore,
     canLoadMore
 }: MessageListProps) => {
+
+    const [editingId, setEditingId] = useState<Id<"messages"> | null>(null);
+
+    const workspaceId = useWorkspaceId();
+
+    const { data: currentMember } = useCurrentMember({ workspaceId });
 
     const groupedMessages = data?.reduce(
         (groups, message) => {
@@ -58,44 +69,50 @@ export const MesesageList = ({
                             {formatDateLabel(dateKey)}
                         </span>
                     </div>
-                    {messages.map((message,index) => {
+                    {messages.map((message, index) => {
 
                         const prevMessage = messages[index - 1];
 
-                        const isCompact = 
-                        prevMessage && 
-                        prevMessage.user?._id === message.user?._id && 
-                        differenceInMinutes(
-                            new Date(message._creationTime),
-                            new Date(prevMessage._creationTime)
-                        ) < TIME_THRESHOLD;
+                        const isCompact =
+                            prevMessage &&
+                            prevMessage.user?._id === message.user?._id &&
+                            differenceInMinutes(
+                                new Date(message._creationTime),
+                                new Date(prevMessage._creationTime)
+                            ) < TIME_THRESHOLD;
 
 
                         return (
                             <Message
-                            key={message._id}
-                            id={message._id}
-                            memberId={message.memberId}
-                            authorImage={message.user.image}
-                            authorName={message.user.name}
-                            isAuthor={false}
-                            reactions={message.reactions}
-                            body={message.body}
-                            image={message.image}
-                            updatedAt={message.updatedAt}
-                            createdAt={message._creationTime}
-                            isEditing={false}
-                            setEditingId={()=>{}}
-                            isCompact={isCompact}
-                            hideThreadButton={false}
-                            threadCount={message.threadCount}
-                            threadImage={message.threadImage}
-                            threadTimeStamp={message.threadTimestamp}
+                                key={message._id}
+                                id={message._id}
+                                memberId={message.memberId}
+                                authorImage={message.user.image}
+                                authorName={message.user.name}
+                                isAuthor={message.memberId === currentMember?._id}
+                                reactions={message.reactions}
+                                body={message.body}
+                                image={message.image}
+                                updatedAt={message.updatedAt}
+                                createdAt={message._creationTime}
+                                isEditing={editingId === message._id}
+                                setEditingId={setEditingId}
+                                isCompact={isCompact}
+                                hideThreadButton={variant === "thread"}
+                                threadCount={message.threadCount}
+                                threadImage={message.threadImage}
+                                threadTimeStamp={message.threadTimestamp}
                             />
                         )
                     })}
                 </div>
             ))}
+            {variant === "channel" && channelName && channelCreationTime && (
+                <ChannelHero
+                    name={channelName}
+                    creationTime={channelCreationTime}
+                />
+            )}
         </div>
     )
 }
