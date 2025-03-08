@@ -6,7 +6,7 @@ interface jotaiProviderProps {
     children: React.ReactNode;
 };
 
-export const jotaiProvider = ({ children }: jotaiProviderProps) => {
+export const JotaiProvider = ({ children }: jotaiProviderProps) => {
     return (
         <Provider>
             {children}
