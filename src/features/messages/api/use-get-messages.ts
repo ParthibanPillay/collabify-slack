@@ -17,9 +17,16 @@ export const useGetMessages = ({
     conversationId,
     parentMessageId
 }: useGetMessagesProps) => {
+
+    //to get proper Id's and not null values
+    const queryArgs: any = {};
+    if (channelId) queryArgs.channelId = channelId;
+    if (conversationId) queryArgs.conversationId = conversationId;
+    if (parentMessageId) queryArgs.parentMessageId = parentMessageId;
+
     const { results, status, loadMore } = usePaginatedQuery(
         api.messages.get,
-        { channelId, conversationId, parentMessageId },
+        queryArgs,
         { initialNumItems: BATCH_SIZE },
     );
 

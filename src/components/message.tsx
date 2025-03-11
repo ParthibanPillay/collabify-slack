@@ -191,11 +191,10 @@ export const Message = ({
                 <div className="flex items-start gap-2">
                     <button>
                         <Avatar>
-                            <AvatarImage src={authorImage}>
+                            <AvatarImage src={authorImage}/>
                                 <AvatarFallback>
                                     {avatarfallback}
                                 </AvatarFallback>
-                            </AvatarImage>
                         </Avatar>
                     </button>
                     {isEditing ? (
