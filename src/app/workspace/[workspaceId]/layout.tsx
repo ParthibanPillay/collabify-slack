@@ -9,6 +9,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Loader } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Thread } from "@/features/messages/components/thread";
+import { Profile } from "@/features/members/components/profile";
 
 interface WorkspaceIdLayoutProps {
     children: React.ReactNode;
@@ -16,9 +17,9 @@ interface WorkspaceIdLayoutProps {
 
 const WorkspaceLayout = ({ children }: WorkspaceIdLayoutProps) => {
 
-    const { parentMessageId, onClose } = usePanel();
+    const { parentMessageId, profileMemberId, onClose } = usePanel();
 
-    const showPanel = !!parentMessageId;
+    const showPanel = !!parentMessageId || !!profileMemberId;
 
     return (
         <div className="h-full">
@@ -43,7 +44,12 @@ const WorkspaceLayout = ({ children }: WorkspaceIdLayoutProps) => {
                             <ResizablePanel minSize={20} defaultSize={29}>
                                 {parentMessageId ? (
                                     <Thread
-                                    messageId={parentMessageId as Id<"messages">}
+                                        messageId={parentMessageId as Id<"messages">}
+                                        onClose={onClose}
+                                    />
+                                ) : profileMemberId ? (
+                                    <Profile
+                                    memberId={profileMemberId as Id<"members">}
                                     onClose={onClose}
                                     />
                                 ) : (
