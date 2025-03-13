@@ -4,11 +4,10 @@ import { v } from "convex/values";
 
 const schema = defineSchema({
     ...authTables,
-
     workspaces: defineTable({
         name: v.string(),
-        userId: v.id('users'),
-        joinCOde: v.optional(v.string()), //TODO fix this issue
+        userId: v.id("users"),
+        joinCode: v.string(), //TODO fix this issue
     }),
     members: defineTable({
         userId: v.id("users"),
@@ -44,21 +43,21 @@ const schema = defineSchema({
         .index("by_member_id", ["memberId"])
         .index("by_channel_id", ["channelId"])
         .index("by_conversation_id", ["conversationId"])
-        .index("by_parent_message_id",["parentMessageId"])
+        .index("by_parent_message_id", ["parentMessageId"])
         .index("by_channel_id_parent_message_id_conversation_id", [
             "channelId",
             "parentMessageId",
             "conversationId"
         ]),
-        reactions : defineTable({
-            workspaceId : v.id("workspaces"),
-            messageId : v.id("messages"),
-            memberId : v.id("members"),
-            value : v.string(),
-        })
-        .index("by_workspace_id",["workspaceId"])
-        .index("by_message_id",["messageId"])
-        .index("by_member_id",["memberId"])
+    reactions: defineTable({
+        workspaceId: v.id("workspaces"),
+        messageId: v.id("messages"),
+        memberId: v.id("members"),
+        value: v.string(),
+    })
+        .index("by_workspace_id", ["workspaceId"])
+        .index("by_message_id", ["messageId"])
+        .index("by_member_id", ["memberId"])
 });
 
 export default schema;
