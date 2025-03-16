@@ -1,0 +1,10 @@
+{
+    "build": {
+      "env": {},
+      "commands": [
+        "npm install --legacy-peer-deps",
+        "npx convex deploy --cmd 'npm run build'"
+      ]
+    }
+  }
+  
