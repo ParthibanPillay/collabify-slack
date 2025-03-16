@@ -39,7 +39,8 @@ export const join = mutation({
         const existingMember = await ctx.db
             .query("members")
             .withIndex("by_workspace_id_user_id", (q) =>
-                q.eq("workspaceId", args.workspaceId).eq("userId", userId))
+                q.eq("workspaceId", args.workspaceId).eq("userId", userId)
+            )
             .unique();
 
         if (existingMember) {
@@ -71,7 +72,8 @@ export const newJoinCode = mutation({
         const member = await ctx.db
             .query("members")
             .withIndex("by_workspace_id_user_id", (q) =>
-                q.eq("workspaceId", args.workspaceId).eq("userId", userId))
+                q.eq("workspaceId", args.workspaceId).eq("userId", userId)
+            )
             .unique();
 
         if (!member || member.role !== "admin") {
@@ -93,7 +95,7 @@ export const create = mutation({
         name: v.string(),
     },
     handler: async (ctx, args) => {
-        const userId = await auth.getUserId(ctx);
+        const userId = await getAuthUserId(ctx);
 
         if (!userId) {
             throw new Error("Unauthorized !");

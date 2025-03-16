@@ -11,6 +11,7 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import { UserItem } from "./user-item";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 import { useMemberId } from "@/hooks/use-member-id";
+import { MemberSection } from "./member-section";
 
 const WorkspaceSidebar = () => {
     const memberId = useMemberId();
@@ -70,19 +71,20 @@ const WorkspaceSidebar = () => {
                     />
                 ))}
             </WorkspaceSection>
-            <WorkspaceSection
+            <MemberSection
                 label="Direct Messages"
                 hint="New direct messages"
                 onNew={() => { }}
             >
                 {members?.map((item) => (
-                <UserItem 
+                <UserItem
+                image={item.user.image} 
                 key={item._id}
                 id={item._id}
                 label={item.user.name}
                 variant={item._id === memberId ? "active" : "default"}/>
             ))}
-            </WorkspaceSection>
+            </MemberSection>
         </div>
     );
 }

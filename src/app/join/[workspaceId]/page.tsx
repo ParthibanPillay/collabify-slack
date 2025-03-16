@@ -11,16 +11,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import VerificationInput from "react-verification-input";
 import { toast } from "sonner";
+import { useEffect, useMemo } from "react";
 
 const JoinPage = () => {
 
     const router = useRouter();
+
     const workspaceId = useWorkspaceId();
 
     const { mutate, isPending } = useJoin();
 
-    const handleComplete = (value:string) => {
-        mutate({workspaceId, joinCode: value}, {
+    const handleComplete = (value: string) => {
+        mutate({ workspaceId, joinCode: value }, {
             onSuccess: (id) => {
                 router.replace(`/workspace/${id}`);
                 toast.success("workspace joined.");
@@ -31,18 +33,26 @@ const JoinPage = () => {
         });
     };
 
-    // const { data, isLoading } = useGetWorkspaceInfo({ id: workspaceId });
-    // console.log({
-    //     workspaceId, data
-    // })
+    const { data, isLoading } = useGetWorkspaceInfo({ id: workspaceId });
+    console.log({
+        workspaceId, data
+    })
 
-    // if(isLoading) {
-    //     return (
-    //         <div className="h-full flex items-center justify-center">
-    //             <Loader className="size-6 animate-spin text-muted-foreground"/>
-    //         </div>
-    //     )
-    // }
+    const isMember = useMemo(() => data?.isMember, [data?.isMember]);
+
+    useEffect(() => {
+        if (isMember) {
+            router.push(`/workspace/${workspaceId}`);
+        }
+    }, [isMember, router, workspaceId])
+
+    if (isLoading) {
+        return (
+            <div className="h-full flex items-center justify-center">
+                <Loader className="size-6 animate-spin text-muted-foreground" />
+            </div>
+        )
+    }
 
     return (
         <div className="h-full flex flex-col gap-y-8 items-center justify-center bg-white p-8 rounded-md shadow-md">
@@ -50,7 +60,7 @@ const JoinPage = () => {
             <div className="flex flex-col gap-y-4 items-center justify-center mx-w-md">
                 <div className="flex flex-col gap-y-2 items-center justify-center">
                     <h1 className="text-2xl font-bold">
-                        Join workspace
+                        Join {data?.name}
                     </h1>
                     <p className="text-md text-muted-foreground">
                         Enter the workspace code to join
@@ -68,17 +78,17 @@ const JoinPage = () => {
                     }}
                     autoFocus
                 />
-                <div className="flex gap-x-4">
-                    <Button
-                        asChild
-                        size="lg"
-                        variant="outline"
-                    >
-                        <Link href="/">
-                            Back to home
-                        </Link>
-                    </Button>
-                </div>
+            </div>
+            <div className="flex gap-x-4">
+                <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                >
+                    <Link href="/">
+                        Back to home
+                    </Link>
+                </Button>
             </div>
         </div>
     );

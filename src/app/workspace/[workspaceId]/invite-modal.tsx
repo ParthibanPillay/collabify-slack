@@ -10,10 +10,15 @@ interface InviteModalProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     name: string;
-    joinCode: string
+    joinCode?: string;
 }
 
-export const InviteModal = ({ open, setOpen, name, joinCode }: InviteModalProps) => {
+export const InviteModal = ({
+    open,
+    setOpen,
+    name,
+    joinCode
+}: InviteModalProps) => {
 
     const workspaceId = useWorkspaceId();
 
@@ -51,7 +56,7 @@ export const InviteModal = ({ open, setOpen, name, joinCode }: InviteModalProps)
 
     return (
         <>
-            <ConfirmDialog/>
+            <ConfirmDialog />
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
                     <DialogHeader>

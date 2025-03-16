@@ -27,7 +27,7 @@ export const SignInCard = ({setState}: SignInCardProps) => {
         e.preventDefault();
 
         setpending(true);
-        signIn("password",{email, password, flow: "signUp"})
+        signIn("password",{email, password, flow: "signIn"})
         .catch(() => {
             seterror("Invalid error or password")
         })

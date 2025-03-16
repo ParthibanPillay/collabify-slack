@@ -20,12 +20,16 @@ export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) =>
     return (
         <>
             <InviteModal
-            open={inviteOpen}
-            setOpen={setInviteOpen}
-            name={workspace.name}
-            joinCode = {workspace.joinCOde}
+                open={inviteOpen}
+                setOpen={setInviteOpen}
+                name={workspace.name}
+                joinCode={workspace.joinCode}
             />
-            <PreferenceModal open={preferencesOpen} setOpen={setPreferencesOpen}  initialValue={workspace.name}/>
+            <PreferenceModal
+                open={preferencesOpen}
+                setOpen={setPreferencesOpen}
+                initialValue={workspace.name}
+            />
             <div className="flex items-center justify-between px-4 h-[49px] gap-0.5">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -51,7 +55,7 @@ export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) =>
                                     Invite people to {workspace.name}
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="cursor-pointer py-2" onClick={() => {setPreferencesOpen(true)}}>
+                                <DropdownMenuItem className="cursor-pointer py-2" onClick={() => { setPreferencesOpen(true) }}>
                                     Preferences
                                 </DropdownMenuItem>
                             </>
