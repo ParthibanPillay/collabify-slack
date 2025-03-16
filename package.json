@@ -6,6 +6,7 @@
     "preinstall": "npx npm-force-resolutions",
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "npx convex deploy",
     "start": "next start",
     "lint": "next lint"
   },
