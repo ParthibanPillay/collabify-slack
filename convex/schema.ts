@@ -7,7 +7,7 @@ const schema = defineSchema({
     workspaces: defineTable({
         name: v.string(),
         userId: v.id("users"),
-        joinCode: v.optional(v.string()), //TODO fix this issue
+        joinCode: v.optional(v.string()),
     }),
     members: defineTable({
         userId: v.id("users"),
@@ -57,7 +57,28 @@ const schema = defineSchema({
     })
         .index("by_workspace_id", ["workspaceId"])
         .index("by_message_id", ["messageId"])
-        .index("by_member_id", ["memberId"])
+        .index("by_member_id", ["memberId"]),
+
+    calls: defineTable({
+        workspaceId: v.id("workspaces"),
+        initiatorId: v.id("members"),
+        receiverId: v.id("members"),
+        status: v.union(
+            v.literal("ringing"),
+            v.literal("connected"),
+            v.literal("ended"),
+            v.literal("rejected")
+        ),
+        startedAt: v.number(),
+        endedAt: v.optional(v.number()),
+        type: v.union(v.literal("audio"), v.literal("video")),
+    })
+        .index("by_workspace_id", ["workspaceId"])
+        .index("by_initiator_id", ["initiatorId"])
+        .index("by_receiver_id", ["receiverId"])
+        .index("by_initiator_id_status", ["initiatorId", "status"])
+        .index("by_receiver_id_status", ["receiverId", "status"])
+        .index("by_workspace_id_status", ["workspaceId", "status"]),
 });
 
 export default schema;

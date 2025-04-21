@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query, QueryCtx } from "./_generated/server";
+import { mutation, query, internalQuery, QueryCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "./_generated/dataModel";
 
@@ -215,3 +215,25 @@ export const remove = mutation({
         return args.id;
     }
 })
+
+export const checkMembership = internalQuery({
+    args: {
+      // Expect the internal user ID (_id from the 'users' table)
+      userId: v.id("users"),
+      // Expect the workspace ID
+      workspaceId: v.id("workspaces")
+    },
+    handler: async (ctx, args) => {
+      // Use the specific index for efficiency, as defined in your schema.ts
+      const membership = await ctx.db
+        .query("members") // Your members table
+        .withIndex("by_workspace_id_user_id", (q) =>
+          q.eq("workspaceId", args.workspaceId).eq("userId", args.userId)
+        )
+        .unique(); // Expect one or none
+  
+      // Return true if a membership record exists, false otherwise
+      return !!membership;
+    },
+  });
+  // --- End of added internal query ---

@@ -13,7 +13,9 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as activeCalls from "../activeCalls.js";
 import type * as auth from "../auth.js";
+import type * as calls_getByworkspace from "../calls/getByworkspace.js";
 import type * as channels from "../channels.js";
 import type * as conversations from "../conversations.js";
 import type * as http from "../http.js";
@@ -33,7 +35,9 @@ import type * as workspaces from "../workspaces.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  activeCalls: typeof activeCalls;
   auth: typeof auth;
+  "calls/getByworkspace": typeof calls_getByworkspace;
   channels: typeof channels;
   conversations: typeof conversations;
   http: typeof http;

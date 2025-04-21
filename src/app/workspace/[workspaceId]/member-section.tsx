@@ -1,8 +1,6 @@
-import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
-import { FaCaretDown, FaCaretRight } from "react-icons/fa";
+import { FaCaretRight } from "react-icons/fa";
 import { useToggle } from "react-use";
 
 interface MemberSectionProps {

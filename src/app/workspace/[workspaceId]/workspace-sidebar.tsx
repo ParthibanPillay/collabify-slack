@@ -12,6 +12,7 @@ import { UserItem } from "./user-item";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 import { useMemberId } from "@/hooks/use-member-id";
 import { MemberSection } from "./member-section";
+import { MediaSection } from "./media-section";
 
 const WorkspaceSidebar = () => {
     const memberId = useMemberId();
@@ -77,14 +78,18 @@ const WorkspaceSidebar = () => {
                 onNew={() => { }}
             >
                 {members?.map((item) => (
-                <UserItem
-                image={item.user.image} 
-                key={item._id}
-                id={item._id}
-                label={item.user.name}
-                variant={item._id === memberId ? "active" : "default"}/>
-            ))}
+                    <UserItem
+                        image={item.user.image}
+                        key={item._id}
+                        id={item._id}
+                        label={item.user.name}
+                        variant={item._id === memberId ? "active" : "default"} />
+                ))}
             </MemberSection>
+            <MediaSection
+            label="Meetings"
+            hint="create video/voice calls"
+            onNew={()=>{}}/>
         </div>
     );
 }
