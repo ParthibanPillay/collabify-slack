@@ -1,32 +1,30 @@
-// src/app/api/token/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { AccessToken } from "livekit-server-sdk";
+import { fetchQuery } from "convex/nextjs";
+import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 
-import { NextRequest, NextResponse } from 'next/server';
-import { AccessToken } from 'livekit-server-sdk';
-
+// One LiveKit room per channel (room name = channelId). Only workspace members get a token.
 export async function GET(req: NextRequest) {
-  const room = req.nextUrl.searchParams.get("room");
-  const username = req.nextUrl.searchParams.get("username");
+  const channelId = req.nextUrl.searchParams.get("channelId") as Id<"channels"> | null;
+  if (!channelId) return NextResponse.json({ error: "Missing channelId" }, { status: 400 });
 
-  if (!room || !username) {
-    return NextResponse.json({ error: "Missing room or username" }, { status: 400 });
+  const token = await convexAuthNextjsToken();
+  if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const me = await fetchQuery(api.huddles.me, { channelId }, { token });
+    if (!me) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+    const at = new AccessToken(process.env.LIVEKIT_API_KEY!, process.env.LIVEKIT_API_SECRET!, {
+      identity: me.userId,
+      name: me.userName,
+    });
+    at.addGrant({ roomJoin: true, room: channelId, canPublish: true, canSubscribe: true });
+
+    return NextResponse.json({ token: await at.toJwt(), channelName: me.channelName });
+  } catch {
+    return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
-
-  const apiKey = process.env.LIVEKIT_API_KEY!;
-  const apiSecret = process.env.LIVEKIT_API_SECRET!;
-
-  const token = new AccessToken(apiKey, apiSecret, {
-    identity: username,
-    name: username,
-  });
-
-  token.addGrant({
-    roomJoin: true,
-    room,
-    canPublish: true,
-    canSubscribe: true,
-  });
-
-  const jwt = await token.toJwt();
-
-  return NextResponse.json({ token: jwt });
 }

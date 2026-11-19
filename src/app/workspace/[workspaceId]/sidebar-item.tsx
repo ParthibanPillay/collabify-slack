@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { LucideIcon } from "lucide-react";
+import { Headphones, LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { IconType } from "react-icons/lib";
 import { cva, type VariantProps} from "class-variance-authority";
@@ -26,10 +26,11 @@ interface SidebarItemProps {
     id: string;
     icon: LucideIcon | IconType;
     variant?: VariantProps<typeof SidebarItemVariants>["variant"];
+    huddle?: string[];
 };
 
 export const SidebarItem = ({
-    label,id,icon: Icon,variant
+    label,id,icon: Icon,variant,huddle
 }:SidebarItemProps) => {
     const workspaceId = useWorkspaceId();
 
@@ -43,6 +44,11 @@ export const SidebarItem = ({
             <Link href={`/workspace/${workspaceId}/channel/${id}`}>
             <Icon className="size-3.5 mr-1 shrink-0"/>
             <span className="text-sm truncate">{label}</span>
+            {!!huddle?.length && (
+                <span title={huddle.join(", ")} className="ml-auto flex items-center gap-0.5 text-xs text-green-400">
+                    <Headphones className="size-3" />{huddle.length}
+                </span>
+            )}
             </Link>
         </Button>
     )

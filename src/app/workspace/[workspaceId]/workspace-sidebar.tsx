@@ -12,7 +12,8 @@ import { UserItem } from "./user-item";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 import { useMemberId } from "@/hooks/use-member-id";
 import { MemberSection } from "./member-section";
-import { MediaSection } from "./media-section";
+import { useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 
 const WorkspaceSidebar = () => {
     const memberId = useMemberId();
@@ -24,6 +25,9 @@ const WorkspaceSidebar = () => {
     const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
     const { data: channels, isLoading: channelsLoading } = UseGetChannels({ workspaceId });
     const { data: members, isLoading: membersLoading } = useGetMembers({ workspaceId });
+
+    const huddles = useQuery(api.huddles.byWorkspace, { workspaceId });
+    const inHuddle = Object.fromEntries((huddles ?? []).map((h) => [h.channelId, h.names]));
 
     if (workspaceLoading || memberLoading) {
         return (
@@ -68,6 +72,7 @@ const WorkspaceSidebar = () => {
                         icon={HashIcon}
                         label={item.name}
                         id={item._id}
+                        huddle={inHuddle[item._id]}
                         variant={channelId === item._id ? "active" : "default"}
                     />
                 ))}
@@ -86,10 +91,6 @@ const WorkspaceSidebar = () => {
                         variant={item._id === memberId ? "active" : "default"} />
                 ))}
             </MemberSection>
-            <MediaSection
-            label="Meetings"
-            hint="create video/voice calls"
-            onNew={()=>{}}/>
         </div>
     );
 }

@@ -59,26 +59,14 @@ const schema = defineSchema({
         .index("by_message_id", ["messageId"])
         .index("by_member_id", ["memberId"]),
 
-    calls: defineTable({
+    huddleParticipants: defineTable({
         workspaceId: v.id("workspaces"),
-        initiatorId: v.id("members"),
-        receiverId: v.id("members"),
-        status: v.union(
-            v.literal("ringing"),
-            v.literal("connected"),
-            v.literal("ended"),
-            v.literal("rejected")
-        ),
-        startedAt: v.number(),
-        endedAt: v.optional(v.number()),
-        type: v.union(v.literal("audio"), v.literal("video")),
+        channelId: v.id("channels"),
+        memberId: v.id("members"),
+        lastSeen: v.number(),
     })
         .index("by_workspace_id", ["workspaceId"])
-        .index("by_initiator_id", ["initiatorId"])
-        .index("by_receiver_id", ["receiverId"])
-        .index("by_initiator_id_status", ["initiatorId", "status"])
-        .index("by_receiver_id_status", ["receiverId", "status"])
-        .index("by_workspace_id_status", ["workspaceId", "status"]),
+        .index("by_channel_id_member_id", ["channelId", "memberId"]),
 });
 
 export default schema;

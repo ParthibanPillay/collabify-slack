@@ -7,7 +7,8 @@ import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { TrashIcon } from "lucide-react";
+import { Headphones, TrashIcon } from "lucide-react";
+import { useHuddle } from "@/features/huddles/store/use-huddle";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
@@ -32,6 +33,8 @@ export const Header = ({ title }: Headerprops) => {
         "Delete this channel ?",
         "You are about to delete this channel, this action is irreversible."
     );
+
+    const [, setHuddle] = useHuddle();
 
     const [editOpen, setEditOpen] = useState(false);
 
@@ -152,6 +155,11 @@ export const Header = ({ title }: Headerprops) => {
                     </div>
                 </DialogContent>
             </Dialog>
+            <div className="ml-auto flex items-center gap-1">
+                <Button variant="ghost" size="iconSm" title="Start huddle" onClick={() => setHuddle({ channelId })}>
+                    <Headphones className="size-4" />
+                </Button>
+            </div>
         </div>
     )
 }

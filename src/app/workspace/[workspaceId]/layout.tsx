@@ -10,10 +10,7 @@ import { Loader } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Thread } from "@/features/messages/components/thread";
 import { Profile } from "@/features/members/components/profile";
-import { VideoRoom } from "./video-room";
-import { getActiveCalls } from "../../../../convex/activeCalls";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { useEffect, useState } from "react";
+import { HuddleDock } from "@/features/huddles/components/huddle-dock";
 
 interface WorkspaceIdLayoutProps {
     children: React.ReactNode;
@@ -24,32 +21,6 @@ const WorkspaceLayout = ({ children }: WorkspaceIdLayoutProps) => {
     const { parentMessageId, profileMemberId, onClose } = usePanel();
 
     const showPanel = !!parentMessageId || !!profileMemberId;
-
-    const workspaceId = useWorkspaceId();
-
-    const [activeCall, setActiveCall] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchActiveCalls = async () => {
-            try {
-                const response = await fetch(`/api/active-calls?workspaceId=${workspaceId}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch active calls");
-                }
-                const data = await response.json();
-                // Assuming the response includes the active call data
-                setActiveCall(data.activeCall); 
-            } catch (err:any) {
-                setError(err.message);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchActiveCalls();
-    }, [workspaceId]);
 
     return (
         <div className="h-full">
@@ -92,22 +63,7 @@ const WorkspaceLayout = ({ children }: WorkspaceIdLayoutProps) => {
                     )}
                 </ResizablePanelGroup>
             </div>
-            {/* Render Video Room if there is an active video call */}
-            {isLoading ? (
-                <div className="flex items-center justify-center">
-                    <Loader className="size-5 text-muted-foreground animate-spin" />
-                </div>
-            ) : error ? (
-                <div className="flex items-center justify-center text-red-500">
-                    <p>Error fetching active calls!</p>
-                </div>
-            ) : activeCall && activeCall.type === "video" ? (
-                <VideoRoom
-                    chatId={activeCall.id}
-                    video={true}
-                    audio={true}
-                />
-            ) : null}
+            <HuddleDock />
         </div>
     );
 }

@@ -13,12 +13,12 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as activeCalls from "../activeCalls.js";
 import type * as auth from "../auth.js";
-import type * as calls_getByworkspace from "../calls/getByworkspace.js";
 import type * as channels from "../channels.js";
 import type * as conversations from "../conversations.js";
+import type * as crons from "../crons.js";
 import type * as http from "../http.js";
+import type * as huddles from "../huddles.js";
 import type * as members from "../members.js";
 import type * as messages from "../messages.js";
 import type * as reactions from "../reactions.js";
@@ -35,12 +35,12 @@ import type * as workspaces from "../workspaces.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  activeCalls: typeof activeCalls;
   auth: typeof auth;
-  "calls/getByworkspace": typeof calls_getByworkspace;
   channels: typeof channels;
   conversations: typeof conversations;
+  crons: typeof crons;
   http: typeof http;
+  huddles: typeof huddles;
   members: typeof members;
   messages: typeof messages;
   reactions: typeof reactions;
