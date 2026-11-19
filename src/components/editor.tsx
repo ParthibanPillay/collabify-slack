@@ -9,8 +9,6 @@ import { MdSend } from "react-icons/md";
 import { ImageIcon, Smile, XIcon } from "lucide-react";
 import { Hint } from "./hint";
 import { cn } from "@/lib/utils";
-import Keyboard from "quill/modules/keyboard";
-import { current } from "../../convex/members";
 import { EmojiPopover } from "./emoji-popover";
 import Image from "next/image";
 
@@ -140,7 +138,7 @@ const Editor = ({
         }
     };
 
-    const onEmojiSelect = (emoji: any) => {
+    const onEmojiSelect = (emoji: { native: string }) => {
         const quill = quillRef.current;
 
         quill?.insertText(quill?.getSelection()?.index || 0, emoji.native);

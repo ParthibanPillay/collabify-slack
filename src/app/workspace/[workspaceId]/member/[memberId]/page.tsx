@@ -15,7 +15,7 @@ const MemberIdPage = () => {
 
     const memberId = useMemberId();
 
-    const { data, mutate, isPending } = useCreateOrGetConversation();
+    const { mutate, isPending } = useCreateOrGetConversation();
 
     const [conversationId, setConversationId] = useState<Id<"conversations"> | null>(null);
 
@@ -27,7 +27,7 @@ const MemberIdPage = () => {
             onSuccess(data) {
                 setConversationId(data);
             },
-            onError(error) {
+            onError() {
                 toast.error("Failed to create or get conversation");
             }
         })
@@ -40,10 +40,12 @@ const MemberIdPage = () => {
     }
 
     if (!conversationId) {
-        <div className="flex flex-col gap-y-2 items-center h-full justify-center">
-            <AlertTriangle className="size-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Conversation not found</span>
-        </div>
+        return (
+            <div className="flex flex-col gap-y-2 items-center h-full justify-center">
+                <AlertTriangle className="size-5 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Conversation not found</span>
+            </div>
+        );
     }
 
     return <Conversation id={conversationId} />

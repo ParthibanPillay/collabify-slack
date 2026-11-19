@@ -19,12 +19,12 @@ const WorkspaceSidebar = () => {
     const memberId = useMemberId();
     const channelId = useChannelId();
     const workspaceId = useWorkspaceId();
-    const [_open, setOpen] = useCreateChannelModal();
+    const [, setOpen] = useCreateChannelModal();
 
     const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
     const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
-    const { data: channels, isLoading: channelsLoading } = UseGetChannels({ workspaceId });
-    const { data: members, isLoading: membersLoading } = useGetMembers({ workspaceId });
+    const { data: channels } = UseGetChannels({ workspaceId });
+    const { data: members } = useGetMembers({ workspaceId });
 
     const huddles = useQuery(api.huddles.byWorkspace, { workspaceId });
     const inHuddle = Object.fromEntries((huddles ?? []).map((h) => [h.channelId, h.names]));

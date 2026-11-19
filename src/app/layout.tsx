@@ -4,7 +4,6 @@ import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CreateWorkspaceModal } from "@/features/workspaces/components/create-workspace-modal";
 import { Modals } from "@/components/modals";
 import { JotaiProvider } from "@/components/jotai-provider";
 

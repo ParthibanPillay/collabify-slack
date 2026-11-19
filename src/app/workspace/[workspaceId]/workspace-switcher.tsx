@@ -9,12 +9,12 @@ import { Loader, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export const WorkspaceSwitcher = () => {
-    const [_open, setOpen] = useCreateWorkspaceModal();
+    const [, setOpen] = useCreateWorkspaceModal();
 
     const router = useRouter();
     const workspaceId = useWorkspaceId();
     const { data: workspace, isLoading:workspaceLoading } = useGetWorkspace({ id: workspaceId });
-    const { data:workspaces, isLoading:workspacesLoading } = useGetWorkspaces();
+    const { data:workspaces } = useGetWorkspaces();
 
     const filterWorkspaces = workspaces?.filter(
         (workspace) => workspace?._id !== workspaceId

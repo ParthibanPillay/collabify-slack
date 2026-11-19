@@ -19,7 +19,7 @@ export const useGetMessages = ({
 }: useGetMessagesProps) => {
 
     //to get proper Id's and not null values
-    const queryArgs: any = {};
+    const queryArgs: Record<string, string> = {};
     if (channelId) queryArgs.channelId = channelId;
     if (conversationId) queryArgs.conversationId = conversationId;
     if (parentMessageId) queryArgs.parentMessageId = parentMessageId;

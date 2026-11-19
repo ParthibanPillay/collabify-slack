@@ -12,9 +12,7 @@ interface MemberSectionProps {
 
 export const MemberSection = ({
     children,
-    label,
-    hint,
-    onNew
+    label
 }: MemberSectionProps) => {
     const [on, toggle] = useToggle(true);
     return (

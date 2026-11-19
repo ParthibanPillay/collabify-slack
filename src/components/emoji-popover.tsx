@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 interface EmojiPopoverProps {
     children: React.ReactNode;
     hint?: string;
-    onEmojiSelect: (emoji: any) => void;
+    onEmojiSelect: (emoji: { native: string }) => void;
 }
 
 export const EmojiPopover = ({
@@ -20,7 +20,7 @@ export const EmojiPopover = ({
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
-    const onSelect = (emoji: any) => {
+    const onSelect = (emoji: { native: string }) => {
         onEmojiSelect(emoji);
         setPopoverOpen(false);
 

@@ -32,7 +32,7 @@ export const CreateChannelModal = () => {
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(),
+        e.preventDefault();
             mutate(
                 { name, workspaceId },
                 {

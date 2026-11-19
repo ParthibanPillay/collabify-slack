@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useGetMember } from "../api/use-get-member";
-import { AlertTriangleIcon, ChevronDownIcon, ChevronsDownIcon, Loader, MailIcon, XIcon } from "lucide-react";
+import { AlertTriangleIcon, ChevronDownIcon, Loader, MailIcon, XIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
         "Are you sure you want to remove this member ?"
     );
 
-    const [UpdateDialog, confirmUpdate] = useConfirm(
+    const [UpdateDialog] = useConfirm(
         "Change role",
         "Are you sure you want to change this member's role ?"
     );
@@ -53,8 +53,8 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
 
     const { } = useGetMember({ id: memberId });
 
-    const { mutate: updateMember, isPending: isUpdatingMember } = useUpdateMember();
-    const { mutate: removeMember, isPending: isRemovingMember } = useRemoveMember();
+    const { mutate: updateMember } = useUpdateMember();
+    const { mutate: removeMember } = useRemoveMember();
 
     const { data: member, isLoading: isLoadingMember } = useGetMember({ id: memberId });
 

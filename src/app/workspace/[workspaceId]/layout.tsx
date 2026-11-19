@@ -5,7 +5,6 @@ import Sidebar from "./sidebar";
 import { Toolbar } from "./toolbar";
 import WorkspaceSidebar from "./workspace-sidebar";
 import { usePanel } from "@/hooks/use-pannel";
-import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Loader } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Thread } from "@/features/messages/components/thread";
